@@ -1030,8 +1030,14 @@ namespace jni
 		if (javaVm == nullptr)
 		{
 			JNIEnv* env;
-			JavaVMInitArgs args = {};
-			args.version = JNI_VERSION_1_2;
+			JavaVMInitArgs args;
+			JavaVMOption options[2];   // JVM invocation options
+			options[0].optionString = (char *)"-Djava.class.path=./";   // where to find java .class
+			options[1].optionString = (char *)"-DXcheck:jni:pedantic";   // where to find java .class
+			args.version = JNI_VERSION_1_6;
+			args.nOptions = 2;
+			args.options = options;
+			args.ignoreUnrecognized = JNI_TRUE;     // invalid options make the JVM init fai
 
 #ifdef _WIN32
 
