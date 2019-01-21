@@ -15,16 +15,21 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source.cpp">
+    <ClInclude Include="jnipp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="jnipp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="jnipp.cpp">
+    <ClCompile Include="Source.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="jnipp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <None Include="Ball.java">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
