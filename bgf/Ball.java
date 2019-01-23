@@ -19,7 +19,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Ball extends Application {
-    
+
     public static int nCell = 3;
     public static int nPlayer = 4;
     public static int nPiece = 1;
@@ -93,7 +93,6 @@ public class Ball extends Application {
         }
     }
 
-
     @Override
     public void start(Stage primaryStage) throws Exception {
         //Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
@@ -138,21 +137,7 @@ public class Ball extends Application {
                         table.add(hbox,i,j);
                         lists.get(i).add(hbox);
 
-                        hbox.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                            @Override
-                            public void handle(MouseEvent event) {
-                                if(isPieceClicked == true){
-                                    ((HBox)event.getSource()).getChildren().remove(0);
-                                    Text text = new Text(((Label)(clickedPiece.getChildren().get(0))).getText());
-                                    text.setFont(new Font(30));
-                                    ((HBox)event.getSource()).setAlignment(Pos.CENTER);
-                                    ((HBox)event.getSource()).getChildren().add(text);
-                                    clickedPiece.setVisible(false);
-                                    isPieceClicked = false;
-                                    clickedPiece = null;
-                                }
-                            }
-                        });
+                        addClickHandle(hbox);
 
                         break;
                     case 1:
@@ -161,21 +146,7 @@ public class Ball extends Application {
                         hbox2.setBorder(new Border(new BorderStroke(Color.BLACK,BorderStrokeStyle.SOLID,CornerRadii.EMPTY,BorderStroke.THIN)));
                         table.add(hbox2,i,j);
                         lists.get(i).add(hbox2);
-                        hbox2.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                            @Override
-                            public void handle(MouseEvent event) {
-                                if(isPieceClicked == true){
-                                    ((HBox)event.getSource()).getChildren().remove(0);
-                                    Text text = new Text(((Label)(clickedPiece.getChildren().get(0))).getText());
-                                    text.setFont(new Font(30));
-                                    ((HBox)event.getSource()).setAlignment(Pos.CENTER);
-                                    ((HBox)event.getSource()).getChildren().add(text);
-                                    clickedPiece.setVisible(false);
-                                    isPieceClicked = false;
-                                    clickedPiece = null;
-                                }
-                            }
-                        });
+                        addClickHandle(hbox2);
                         break;
                 }
             }
@@ -194,7 +165,6 @@ public class Ball extends Application {
             case 2:
                 for (int l = 0; l < y ; l++) {
                     for (int i = 0; i < pieceA.length(); i++) {
-                        //                    arrangeAB(piece_top, piece_bottom, i);
                         if(arrangePieces(piece_top, i, l, pieceA, pieceA_array, true)) break;
                         arrangePieces(piece_bottom, i, l, pieceB, pieceB_array, true);
                     }
@@ -203,7 +173,6 @@ public class Ball extends Application {
             case 4:
                 for (int l = 0;l < y ;l++) {
                     for (int i = 0; i < pieceA.length(); i++) {
-                        //                    arrangeAB(piece_top, piece_bottom, i);
                         if (arrangePieces(piece_top, i, l, pieceA, pieceA_array, true)) break;
                         arrangePieces(piece_bottom, i, l, pieceB, pieceB_array, true);
                         arrangePieces(piece_right, i, l, pieceC, pieceC_array, false);
@@ -221,6 +190,24 @@ public class Ball extends Application {
         primaryStage.setTitle("Board");
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    private void addClickHandle(HBox hbox) {
+        hbox.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (isPieceClicked) {
+                    ((HBox) event.getSource()).getChildren().remove(0);
+                    Text text = new Text(((Label) (clickedPiece.getChildren().get(0))).getText());
+                    text.setFont(new Font(30));
+                    ((HBox) event.getSource()).setAlignment(Pos.CENTER);
+                    ((HBox) event.getSource()).getChildren().add(text);
+                    clickedPiece.setVisible(false);
+                    isPieceClicked = false;
+                    clickedPiece = null;
+                }
+            }
+        });
     }
 
     private int foundY(String s) {
