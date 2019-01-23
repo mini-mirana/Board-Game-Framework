@@ -19,7 +19,6 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Ball extends Application {
-
     public static int nCell = 3;
     public static int nPlayer = 4;
     public static int nPiece = 1;
@@ -192,17 +191,21 @@ public class Ball extends Application {
         switch (nPlayer){
             case 2:
                 for (int i = 0; i < pieceA.length(); i++) {
-                    arrangeAB(piece_top, piece_bottom, i);
+//                    arrangeAB(piece_top, piece_bottom, i);
+                    arrangePieces(piece_top, i, pieceA, pieceA_array,true);
+                    arrangePieces(piece_bottom, i, pieceB, pieceB_array,true);
                 }
                 break;
             case 4:
 
                 for (int i = 0; i < pieceA.length(); i++) {
-                    arrangeAB(piece_top, piece_bottom, i);
+//                    arrangeAB(piece_top, piece_bottom, i);
 
-                    arrangeCD(piece_right, i, pieceC, pieceC_array);
+                    arrangePieces(piece_top, i, pieceA, pieceA_array,true);
+                    arrangePieces(piece_bottom, i, pieceB, pieceB_array,true);
+                    arrangePieces(piece_right, i, pieceC, pieceC_array,false);
 
-                    arrangeCD(piece_left, i, pieceD, pieceD_array);
+                    arrangePieces(piece_left, i, pieceD, pieceD_array,false);
                 }
 
                 break;
@@ -216,7 +219,7 @@ public class Ball extends Application {
         primaryStage.show();
     }
 
-    private void arrangeCD(GridPane piece_right, int i, String pieceC, ArrayList<HBox> pieceC_array) {
+    private void arrangePieces(GridPane piece, int i, String pieceC, ArrayList<HBox> pieceC_array, boolean horizontal) {
         Label labelC = new Label(Character.toString(pieceC.charAt(i)));
         labelC.setFont(new Font(30));
         labelC.setAlignment(Pos.CENTER);
@@ -225,61 +228,9 @@ public class Ball extends Application {
         hBoxC.setAlignment(Pos.CENTER);
         hBoxC.setBorder(new Border(new BorderStroke(Color.BLACK,BorderStrokeStyle.SOLID,CornerRadii.EMPTY,BorderStroke.THIN)));
         pieceC_array.add(hBoxC);
-        piece_right.add(hBoxC,0,i);
+        if (!horizontal)piece.add(hBoxC,0,i);
+        else piece.add(hBoxC,i,0);
         hBoxC.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if (event.getButton() == MouseButton.PRIMARY) {
-                    ((HBox)event.getSource()).setBorder(new Border(new BorderStroke(Color.GOLD, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderStroke.THIN)));
-                    isPieceClicked = true;
-                    clickedPiece = (HBox) event.getSource();
-                }
-                if (event.getButton() == MouseButton.SECONDARY) {
-                    ((HBox)event.getSource()).setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderStroke.THIN)));
-                    isPieceClicked = false;
-                    clickedPiece = null;
-                }
-            }
-        });
-    }
-
-    private void arrangeAB(GridPane piece_top, GridPane piece_bottom, int i) {
-        Label labelA = new Label(Character.toString(pieceA.charAt(i)));
-        labelA.setFont(new Font(30));
-        labelA.setAlignment(Pos.CENTER);
-        labelA.setMinSize(30,30);
-        HBox hBoxA = new HBox(labelA);
-        hBoxA.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderStroke.THIN)));
-        hBoxA.setAlignment(Pos.CENTER);
-        pieceA_array.add(hBoxA);
-        piece_top.add(hBoxA,i,0);
-        hBoxA.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if (event.getButton() == MouseButton.PRIMARY) {
-                    ((HBox)event.getSource()).setBorder(new Border(new BorderStroke(Color.GOLD, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderStroke.THIN)));
-                    isPieceClicked = true;
-                    clickedPiece = (HBox) event.getSource();
-                }
-                if (event.getButton() == MouseButton.SECONDARY) {
-                    ((HBox)event.getSource()).setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderStroke.THIN)));
-                    isPieceClicked = false;
-                    clickedPiece = null;
-                }
-            }
-        });
-
-        Label labelB = new Label(Character.toString(pieceB.charAt(i)));
-        labelB.setFont(new Font(30));
-        labelB.setAlignment(Pos.CENTER);
-        labelB.setMinSize(30,30);
-        HBox hBoxB = new HBox(labelB);
-        hBoxB.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderStroke.THIN)));
-        hBoxB.setAlignment(Pos.CENTER);
-        pieceB_array.add(hBoxB);
-        piece_bottom.add(hBoxB,i,0);
-
-        hBoxB.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 if (event.getButton() == MouseButton.PRIMARY) {
