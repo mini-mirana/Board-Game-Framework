@@ -19,6 +19,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Ball extends Application {
+    
     public static int nCell = 3;
     public static int nPlayer = 4;
     public static int nPiece = 1;
@@ -44,10 +45,10 @@ public class Ball extends Application {
      * unicode representation containing desired number of pieces
      * Example: "xxx" "ooo"
      */
-    public static String pieceA = "\u2654\u2655\u2656\u2657";
-    public static String pieceB = "OOOO";
-    public static String pieceC = "\u2658\u2659\u2660\u2661";
-    public static String pieceD = "BBBB";
+    public static String pieceA = "\u2654\u2655\u2656\u2657\n\u2662\u2663\u2664\u2665";
+    public static String pieceB = "OOOO\nOOOO";
+    public static String pieceC = "\u2658\u2659\u2660\u2661\n\u2666\u2667\u2668\u2669";
+    public static String pieceD = "BBBB\nBBBB";
 
     private static int diceNum = 0;
 
@@ -188,24 +189,27 @@ public class Ball extends Application {
             hBox.setVisible(false);
         }
 
+        int y = foundY(pieceA);
         switch (nPlayer){
             case 2:
-                for (int i = 0; i < pieceA.length(); i++) {
-//                    arrangeAB(piece_top, piece_bottom, i);
-                    arrangePieces(piece_top, i, pieceA, pieceA_array,true);
-                    arrangePieces(piece_bottom, i, pieceB, pieceB_array,true);
+                for (int l = 0; l < y ; l++) {
+                    for (int i = 0; i < pieceA.length(); i++) {
+                        //                    arrangeAB(piece_top, piece_bottom, i);
+                        if(arrangePieces(piece_top, i, l, pieceA, pieceA_array, true)) break;
+                        arrangePieces(piece_bottom, i, l, pieceB, pieceB_array, true);
+                    }
                 }
                 break;
             case 4:
+                for (int l = 0;l < y ;l++) {
+                    for (int i = 0; i < pieceA.length(); i++) {
+                        //                    arrangeAB(piece_top, piece_bottom, i);
+                        if (arrangePieces(piece_top, i, l, pieceA, pieceA_array, true)) break;
+                        arrangePieces(piece_bottom, i, l, pieceB, pieceB_array, true);
+                        arrangePieces(piece_right, i, l, pieceC, pieceC_array, false);
 
-                for (int i = 0; i < pieceA.length(); i++) {
-//                    arrangeAB(piece_top, piece_bottom, i);
-
-                    arrangePieces(piece_top, i, pieceA, pieceA_array,true);
-                    arrangePieces(piece_bottom, i, pieceB, pieceB_array,true);
-                    arrangePieces(piece_right, i, pieceC, pieceC_array,false);
-
-                    arrangePieces(piece_left, i, pieceD, pieceD_array,false);
+                        arrangePieces(piece_left, i,l , pieceD, pieceD_array, false);
+                    }
                 }
 
                 break;
@@ -219,8 +223,19 @@ public class Ball extends Application {
         primaryStage.show();
     }
 
-    private void arrangePieces(GridPane piece, int i, String pieceC, ArrayList<HBox> pieceC_array, boolean horizontal) {
-        Label labelC = new Label(Character.toString(pieceC.charAt(i)));
+    private int foundY(String s) {
+        int sum = 0;
+        for (char c :
+                s.toCharArray()) {
+            if (c == '\n') sum++;
+        }
+        return sum+1;
+    }
+
+    private boolean arrangePieces(GridPane piece, int i, int j, String pieceC, ArrayList<HBox> pieceC_array, boolean horizontal) {
+        char c = pieceC.charAt(i);
+        if (c == '\n') return true;
+        Label labelC = new Label(Character.toString(c));
         labelC.setFont(new Font(30));
         labelC.setAlignment(Pos.CENTER);
         labelC.setMinSize(30,30);
@@ -228,8 +243,8 @@ public class Ball extends Application {
         hBoxC.setAlignment(Pos.CENTER);
         hBoxC.setBorder(new Border(new BorderStroke(Color.BLACK,BorderStrokeStyle.SOLID,CornerRadii.EMPTY,BorderStroke.THIN)));
         pieceC_array.add(hBoxC);
-        if (!horizontal)piece.add(hBoxC,0,i);
-        else piece.add(hBoxC,i,0);
+        if (!horizontal)piece.add(hBoxC,j,i);
+        else piece.add(hBoxC,i,j);
         hBoxC.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -245,6 +260,7 @@ public class Ball extends Application {
                 }
             }
         });
+        return false;
     }
 
 
