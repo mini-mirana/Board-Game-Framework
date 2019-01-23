@@ -152,13 +152,10 @@ public class Ball extends Application {
             }
         }
 
-        Scanner scanner = new Scanner(lockedCell);
-        scanner.useDelimiter("-");
-        while(scanner.hasNext()){
-            String s = scanner.next();
-            HBox hBox = lists.get(Integer.parseInt(Character.toString(s.charAt(0)))).get(Integer.parseInt(Character.toString(s.charAt(2))));
-            hBox.setVisible(false);
-        }
+
+        disableCell("-",lockedCell,lists);
+
+
 
         int y = foundY(pieceA);
         switch (nPlayer){
@@ -190,6 +187,22 @@ public class Ball extends Application {
         primaryStage.setTitle("Board");
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    /**
+     * permanently disables a cell base on a formatted string
+     * @param delimiter
+     * @param lockedCell
+     * @param HBoxlists
+     */
+    private void disableCell(String delimiter, String lockedCell, ArrayList<ArrayList<HBox>> HBoxlists) {
+        Scanner scanner = new Scanner(lockedCell);
+        scanner.useDelimiter(delimiter);
+        while(scanner.hasNext()){
+            String s = scanner.next();
+            HBox hBox = HBoxlists.get(Integer.parseInt(Character.toString(s.charAt(0)))).get(Integer.parseInt(Character.toString(s.charAt(2))));
+            hBox.setVisible(false);
+        }
     }
 
     private void addClickHandle(HBox hbox) {
