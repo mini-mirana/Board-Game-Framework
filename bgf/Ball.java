@@ -10,28 +10,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.stage.Stage;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.Scanner;
-
-
-import javafx.application.Application;
-import javafx.event.EventHandler;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.time.LocalDateTime;
@@ -59,19 +37,18 @@ class ManageBoard {
      */
     public static boolean answerQueue;
 
-    ManageBoard(){
+    ManageBoard() {
 
     }
 
     /**
-     *
      * @param cat 1: Player A, 2: Player B, 3: Player C, 4: Player D
-     * @param y which piece
-     * @param i new place row
-     * @param j new place column
+     * @param y   which piece
+     * @param i   new place row
+     * @param j   new place column
      */
-    public void moveOutter(int cat, int y,int i,int j){
-        switch(cat) {
+    public void moveOutter(int cat, int y, int i, int j) {
+        switch (cat) {
             case 1:
                 HBox pieceTemp = Ball.pieceA_array.get(y);
                 String text = ((Label) (pieceTemp.getChildren().get(0))).getText();
@@ -114,8 +91,9 @@ class ManageBoard {
                 break;
         }
     }
-    public void moveInner(int x, int y,int i,int j){
-        switch(x) {
+
+    public void moveInner(int x, int y, int i, int j) {
+        switch (x) {
             case 1:
                 HBox pieceTemp = Ball.lists.get(x).get(y);
                 String text = ((Label) (pieceTemp.getChildren().get(0))).getText();
@@ -158,12 +136,14 @@ class ManageBoard {
                 break;
         }
     }
-    public void isMoveValidOutter(int cat, int y,int i,int j){
+
+    public void isMoveValidOutter(int cat, int y, int i, int j) {
         ManageBoard.queueTriggered = true;
     }
-    public void isMoveValidInner(int x, int y,int i,int j){
+
+    public void isMoveValidInner(int x, int y, int i, int j) {
         ManageBoard.queueTriggered = true;
-        ManageBoard.moveQueue = Integer.toString(x+2) + Integer.toString(y) + Integer.toString(i+2) + Integer.toString(j);
+        ManageBoard.moveQueue = Integer.toString(x + 2) + Integer.toString(y) + Integer.toString(i + 2) + Integer.toString(j);
     }
 }
 
@@ -264,12 +244,12 @@ public class Ball extends Application {
         root.add(piece_right, 2, 1);
         root.add(piece_bottom, 1, 2);
 
-        Text diceNo = new Text(Integer.toString(diceNum));
+        Label diceNo = new Label(Integer.toString(diceNum));
         diceNo.minWidth(60);
         diceNo.minHeight(60);
         HBox dice = new HBox(diceNo);
         dice.setVisible(Boolean.parseBoolean(Integer.toString(diceNeeded)));
-        dice.setBorder(new Border(new BorderStroke(Color.BLACK,BorderStrokeStyle.DASHED,CornerRadii.EMPTY,BorderStroke.THIN)));
+        dice.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.DASHED, CornerRadii.EMPTY, BorderStroke.THIN)));
         dice.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -280,32 +260,34 @@ public class Ball extends Application {
             }
         });
         dice.setAlignment(Pos.CENTER);
+        dice.setMinSize(60,60);
         root.add(dice, 2, 2);
 
         Label engineMsg = new Label();
         engineMsgBox = new HBox(engineMsg);
         engineMsgBox.setAlignment(Pos.CENTER);
-        root.add(engineMsgBox,0,0);
+        engineMsgBox.setMinSize(60,60);
+        root.add(engineMsgBox, 0, 0);
         showMsg(gameMsg);
 
         for (int i = 0; i < nCelly; i++) {
             for (int j = 0; j < nCellx; j++) {
-                switch(cellShape){
+                switch (cellShape) {
                     case 0:
                         Circle circle = new Circle(30, Color.GREY);
                         HBox hbox = new HBox(circle);
-                        hbox.setBorder(new Border(new BorderStroke(Color.BLACK,BorderStrokeStyle.SOLID,CornerRadii.EMPTY,BorderStroke.THIN)));
-                        table.add(hbox,i,j);
+                        hbox.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderStroke.THIN)));
+                        table.add(hbox, i, j);
                         lists.get(i).add(hbox);
 
                         addClickHandle(hbox);
 
                         break;
                     case 1:
-                        Rectangle rectangle = new Rectangle(60,60,Color.GREY);
+                        Rectangle rectangle = new Rectangle(60, 60, Color.GREY);
                         HBox hbox2 = new HBox(rectangle);
-                        hbox2.setBorder(new Border(new BorderStroke(Color.BLACK,BorderStrokeStyle.SOLID,CornerRadii.EMPTY,BorderStroke.THIN)));
-                        table.add(hbox2,i,j);
+                        hbox2.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderStroke.THIN)));
+                        table.add(hbox2, i, j);
                         lists.get(i).add(hbox2);
                         addClickHandle(hbox2);
                         break;
@@ -314,34 +296,32 @@ public class Ball extends Application {
         }
 
 
-        disableCell("-",lockedCell,lists);
-
+        disableCell("-", lockedCell, lists);
 
 
         int y = foundY(pieceA);
-        switch (nPlayer){
+        switch (nPlayer) {
             case 2:
-                for (int l = 0; l < y ; l++) {
+                for (int l = 0; l < y; l++) {
                     for (int i = 0; i < pieceA.length(); i++) {
-                        if(arrangePieces(piece_top, i, l, pieceA, pieceA_array, true)) break;
+                        if (arrangePieces(piece_top, i, l, pieceA, pieceA_array, true)) break;
                         arrangePieces(piece_bottom, i, l, pieceB, pieceB_array, true);
                     }
                 }
                 break;
             case 4:
-                for (int l = 0;l < y ;l++) {
+                for (int l = 0; l < y; l++) {
                     for (int i = 0; i < pieceA.length(); i++) {
                         if (arrangePieces(piece_top, i, l, pieceA, pieceA_array, true)) break;
                         arrangePieces(piece_bottom, i, l, pieceB, pieceB_array, true);
                         arrangePieces(piece_right, i, l, pieceC, pieceC_array, false);
 
-                        arrangePieces(piece_left, i,l , pieceD, pieceD_array, false);
+                        arrangePieces(piece_left, i, l, pieceD, pieceD_array, false);
                     }
                 }
 
                 break;
         }
-
 
 
         Scene scene = new Scene(root, 300, 275);
@@ -351,11 +331,12 @@ public class Ball extends Application {
     }
 
     public static void showMsg(String gameMsg) {
-        ((Label)(engineMsgBox.getChildren().get(0))).setText(gameMsg);
+        ((Label) (engineMsgBox.getChildren().get(0))).setText(gameMsg);
     }
 
     /**
      * permanently disables a cell base on a formatted string
+     *
      * @param delimiter
      * @param lockedCell
      * @param HBoxlists
@@ -363,7 +344,7 @@ public class Ball extends Application {
     private void disableCell(String delimiter, String lockedCell, ArrayList<ArrayList<HBox>> HBoxlists) {
         Scanner scanner = new Scanner(lockedCell);
         scanner.useDelimiter(delimiter);
-        while(scanner.hasNext()){
+        while (scanner.hasNext()) {
             String s = scanner.next();
             HBox hBox = HBoxlists.get(Integer.parseInt(Character.toString(s.charAt(0)))).get(Integer.parseInt(Character.toString(s.charAt(2))));
             hBox.setVisible(false);
@@ -374,16 +355,40 @@ public class Ball extends Application {
         hbox.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                if (isPieceClicked) {
+                if (isPieceClicked && event.getButton().equals(MouseButton.PRIMARY) && clickedPiece != event.getSource()) {
+                    clickedPiece.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderStroke.THIN)));
                     ((HBox) event.getSource()).getChildren().remove(0);
-                    Text text = new Text(((Label) (clickedPiece.getChildren().get(0))).getText());
+                    Label text = new Label(((Label) (clickedPiece.getChildren().get(0))).getText());
                     text.setFont(new Font(30));
                     ((HBox) event.getSource()).setAlignment(Pos.CENTER);
+                    ((HBox) event.getSource()).setMinSize(60,60);;
                     ((HBox) event.getSource()).getChildren().add(text);
-                    clickedPiece.setVisible(false);
+                    clickedPiece.getChildren().remove(0);
+                    if (cellShape == 0) {
+                        Circle circle = new Circle(30, Color.GREY);
+                        clickedPiece.getChildren().add(circle);
+                    } else if (cellShape == 1) {
+                        Rectangle rectangle = new Rectangle(60, 60, Color.GREY);
+                        clickedPiece.getChildren().add(rectangle);
+                    }
                     isPieceClicked = false;
                     clickedPiece = null;
+                } else {
+                    if(event.getButton().equals(MouseButton.PRIMARY)) {
+                        String simpleName = ((HBox) event.getSource()).getChildren().get(0).getClass().getSimpleName();
+                        if (simpleName.equals(Label.class.getSimpleName()) || simpleName.equals(Label.class.getSimpleName())) {
+                            ((HBox) event.getSource()).setBorder(new Border(new BorderStroke(Color.YELLOW, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderStroke.THIN)));
+                            clickedPiece = (HBox) event.getSource();
+                            isPieceClicked = true;
+                        }
+                    }
+                    if (event.getButton().equals(MouseButton.SECONDARY)) {
+                        ((HBox) event.getSource()).setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderStroke.THIN)));
+                        clickedPiece = null;
+                        isPieceClicked = false;
+                    }
                 }
+
             }
         });
     }
@@ -394,7 +399,7 @@ public class Ball extends Application {
                 s.toCharArray()) {
             if (c == '\n') sum++;
         }
-        return sum+1;
+        return sum + 1;
     }
 
     private boolean arrangePieces(GridPane piece, int i, int j, String pieceC, ArrayList<HBox> pieceC_array, boolean horizontal) {
@@ -403,28 +408,15 @@ public class Ball extends Application {
         Label labelC = new Label(Character.toString(c));
         labelC.setFont(new Font(30));
         labelC.setAlignment(Pos.CENTER);
-        labelC.setMinSize(30,30);
+        labelC.setMinSize(30, 30);
         HBox hBoxC = new HBox(labelC);
         hBoxC.setAlignment(Pos.CENTER);
-        hBoxC.setBorder(new Border(new BorderStroke(Color.BLACK,BorderStrokeStyle.SOLID,CornerRadii.EMPTY,BorderStroke.THIN)));
+        hBoxC.setMinSize(60,60);
+        hBoxC.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderStroke.THIN)));
         pieceC_array.add(hBoxC);
-        if (!horizontal)piece.add(hBoxC,j,i);
-        else piece.add(hBoxC,i,j);
-        hBoxC.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if (event.getButton() == MouseButton.PRIMARY) {
-                    ((HBox)event.getSource()).setBorder(new Border(new BorderStroke(Color.GOLD, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderStroke.THIN)));
-                    isPieceClicked = true;
-                    clickedPiece = (HBox) event.getSource();
-                }
-                if (event.getButton() == MouseButton.SECONDARY) {
-                    ((HBox)event.getSource()).setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderStroke.THIN)));
-                    isPieceClicked = false;
-                    clickedPiece = null;
-                }
-            }
-        });
+        if (!horizontal) piece.add(hBoxC, j, i);
+        else piece.add(hBoxC, i, j);
+        hBoxC.setOnMouseClicked(event -> addClickHandle((HBox) event.getSource()));
         return false;
     }
 
