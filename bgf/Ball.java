@@ -18,6 +18,78 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
+
+/**
+ * this can move a piece
+ * replace a piece with square or circle
+ * change used piece
+ */
+class ManageBoard {
+    public static String moveQueue;
+    public static boolean queueTriggered;
+    public static boolean answerQueue;
+
+    ManageBoard(){
+
+    }
+
+    /**
+     *
+     * @param cat 1: Player A, 2: Player B, 3: Player C, 4: Player D
+     * @param y which piece
+     * @param i new place row
+     * @param j new place column
+     */
+    public void move(int cat, int y,int i,int j){
+        switch(cat) {
+            case 1:
+                HBox pieceTemp = Ball.pieceA_array.get(y);
+                String text = ((Label) (pieceTemp.getChildren().get(0))).getText();
+                pieceTemp.setVisible(false);
+
+                HBox listTemp = Ball.lists.get(i).get(j);
+                listTemp.getChildren().remove(0);
+                Label label = new Label(text);
+                listTemp.getChildren().add(label);
+                break;
+            case 2:
+                HBox pieceTemp2 = Ball.pieceA_array.get(y);
+                String text2 = ((Label) (pieceTemp2.getChildren().get(0))).getText();
+                pieceTemp2.setVisible(false);
+
+                HBox listTemp2 = Ball.lists.get(i).get(j);
+                listTemp2.getChildren().remove(0);
+                Label label2 = new Label(text2);
+                listTemp2.getChildren().add(label2);
+                break;
+            case 3:
+                HBox pieceTemp3 = Ball.pieceA_array.get(y);
+                String text3 = ((Label) (pieceTemp3.getChildren().get(0))).getText();
+                pieceTemp3.setVisible(false);
+
+                HBox listTemp3 = Ball.lists.get(i).get(j);
+                listTemp3.getChildren().remove(0);
+                Label label3 = new Label(text3);
+                listTemp3.getChildren().add(label3);
+                break;
+            case 4:
+                HBox pieceTemp4 = Ball.pieceA_array.get(y);
+                String text4 = ((Label) (pieceTemp4.getChildren().get(0))).getText();
+                pieceTemp4.setVisible(false);
+
+                HBox listTemp4 = Ball.lists.get(i).get(j);
+                listTemp4.getChildren().remove(0);
+                Label label4 = new Label(text4);
+                listTemp4.getChildren().add(label4);
+                break;
+        }
+    }
+    public void isMoveValid(int cat, int y,int i,int j){
+
+    }
+}
+
+
 public class Ball extends Application {
 
     public static int nCell = 3;
@@ -57,11 +129,11 @@ public class Ball extends Application {
 
     private static int diceNum = 0;
 
-    private static ArrayList<ArrayList<HBox>> lists;
-    private static ArrayList<HBox> pieceA_array;
-    private static ArrayList<HBox> pieceB_array;
-    private static ArrayList<HBox> pieceC_array;
-    private static ArrayList<HBox> pieceD_array;
+    public static ArrayList<ArrayList<HBox>> lists;
+    public static ArrayList<HBox> pieceB_array;
+    public static ArrayList<HBox> pieceA_array;
+    public static ArrayList<HBox> pieceC_array;
+    public static ArrayList<HBox> pieceD_array;
 
     // arrange pieces
     private boolean isPieceClicked = false;
