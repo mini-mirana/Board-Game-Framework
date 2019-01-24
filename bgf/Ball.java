@@ -24,6 +24,11 @@ public class Ball extends Application {
     public static int nPlayer = 4;
     public static int nPiece = 1;
     /**
+     * A string that lets show messages about game stage
+     */
+    public static String gameMsg = "Message from engine";
+    public static HBox engineMsgBox;
+    /**
      * if there is no limitation time put reactionTime = 0
      */
     public static int reactionTime = 0;
@@ -127,6 +132,12 @@ public class Ball extends Application {
         dice.setAlignment(Pos.CENTER);
         root.add(dice, 2, 2);
 
+        Label engineMsg = new Label();
+        engineMsgBox = new HBox(engineMsg);
+        engineMsgBox.setAlignment(Pos.CENTER);
+        root.add(engineMsgBox,0,0);
+        showMsg(gameMsg);
+
         for (int i = 0; i < nCell; i++) {
             for (int j = 0; j < nCell; j++) {
                 switch(cellShape){
@@ -187,6 +198,10 @@ public class Ball extends Application {
         primaryStage.setTitle("Board");
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    public static void showMsg(String gameMsg) {
+        ((Label)(engineMsgBox.getChildren().get(0))).setText(gameMsg);
     }
 
     /**
@@ -262,6 +277,7 @@ public class Ball extends Application {
         });
         return false;
     }
+
 
 
     public static int exe(int nPlayer) {
