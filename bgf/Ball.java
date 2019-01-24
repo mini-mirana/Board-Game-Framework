@@ -25,8 +25,17 @@ import java.util.Scanner;
  * change used piece
  */
 class ManageBoard {
+    /**
+     *
+     */
     public static String moveQueue;
+    /**
+     * if true c++ has to pay attention
+     */
     public static boolean queueTriggered;
+    /**
+     * c++ answer
+     */
     public static boolean answerQueue;
 
     ManageBoard(){
@@ -40,7 +49,7 @@ class ManageBoard {
      * @param i new place row
      * @param j new place column
      */
-    public void move(int cat, int y,int i,int j){
+    public void moveOutter(int cat, int y,int i,int j){
         switch(cat) {
             case 1:
                 HBox pieceTemp = Ball.pieceA_array.get(y);
@@ -84,7 +93,13 @@ class ManageBoard {
                 break;
         }
     }
-    public void isMoveValid(int cat, int y,int i,int j){
+    public void moveInner(int x, int y,int i,int j){
+
+    }
+    public void isMoveValidOutter(int cat, int y,int i,int j){
+
+    }
+    public void isMoveValidInner(int cat, int y,int i,int j){
 
     }
 }
