@@ -19,6 +19,27 @@ import java.util.Random;
 import java.util.Scanner;
 
 
+import javafx.application.Application;
+import javafx.event.EventHandler;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.Scanner;
+
+
 /**
  * this can move a piece
  * replace a piece with square or circle
@@ -138,18 +159,19 @@ class ManageBoard {
         }
     }
     public void isMoveValidOutter(int cat, int y,int i,int j){
-
+        ManageBoard.queueTriggered = true;
     }
-    public void isMoveValidInner(int cat, int y,int i,int j){
-
+    public void isMoveValidInner(int x, int y,int i,int j){
+        ManageBoard.queueTriggered = true;
+        ManageBoard.moveQueue = Integer.toString(x+2) + Integer.toString(y) + Integer.toString(i+2) + Integer.toString(j);
     }
 }
 
-
 public class Ball extends Application {
 
-    public static int nCell = 3;
-    public static int nPlayer = 4;
+    public static int nCelly = 8;
+    public static int nCellx = 4;
+    public static int nPlayer = 2;
     public static int nPiece = 1;
     /**
      * A string that lets show messages about game stage
@@ -178,9 +200,9 @@ public class Ball extends Application {
      * unicode representation containing desired number of pieces
      * Example: "xxx" "ooo"
      */
-    public static String pieceA = "\u2654\u2655\u2656\u2657\n\u2662\u2663\u2664\u2665";
-    public static String pieceB = "OOOO\nOOOO";
-    public static String pieceC = "\u2658\u2659\u2660\u2661\n\u2666\u2667\u2668\u2669";
+    public static String pieceA = "\u2654\u2655\u2656\u2657\u2662\u2663\u2664\u2665\n♟♟♟♟♟♟♟♟";
+    public static String pieceB = "\u2654\u2655\u2656\u2657\u2662\u2663\u2664\u2665\n♟♟♟♟♟♟♟♟";
+    public static String pieceC = "OOOO\nOOOO";
     public static String pieceD = "BBBB\nBBBB";
 
     private static int diceNum = 0;
@@ -211,14 +233,14 @@ public class Ball extends Application {
         switch (cellShape) {
             case 0:
                 lists = new ArrayList<>();
-                for (int i = 0; i < nCell; i++) {
+                for (int i = 0; i < nCelly; i++) {
                     ArrayList<HBox> temp = new ArrayList<>();
                     lists.add(temp);
                 }
                 break;
             case 1:
                 lists = new ArrayList<>();
-                for (int i = 0; i < nCell; i++) {
+                for (int i = 0; i < nCelly; i++) {
                     ArrayList<HBox> temp = new ArrayList<>();
                     lists.add(temp);
                 }
@@ -266,8 +288,8 @@ public class Ball extends Application {
         root.add(engineMsgBox,0,0);
         showMsg(gameMsg);
 
-        for (int i = 0; i < nCell; i++) {
-            for (int j = 0; j < nCell; j++) {
+        for (int i = 0; i < nCelly; i++) {
+            for (int j = 0; j < nCellx; j++) {
                 switch(cellShape){
                     case 0:
                         Circle circle = new Circle(30, Color.GREY);
@@ -409,8 +431,8 @@ public class Ball extends Application {
 
 
     public static int exe(int nPlayer) {
-		Ball.nPlayer = nPlayer;
+        Ball.nPlayer = nPlayer;
         launch();
-		return 0;
+        return 0;
     }
 }
