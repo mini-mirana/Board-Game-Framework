@@ -29,20 +29,20 @@ class ManageBoard {
     /**
      * is game started or not
      */
-    public static boolean gameStarted = false;
+    public static volatile boolean gameStarted = false;
 
     /**
      *
      */
-    public static String moveQueue;
+    public static volatile String moveQueue;
     /**
      * if true c++ has to pay attention
      */
-    public static boolean queueTriggered;
+    public static volatile boolean queueTriggered;
     /**
      * c++ answer
      */
-    public static boolean answerQueue;
+    public static volatile boolean answerQueue;
 
     ManageBoard() {
 
@@ -463,7 +463,6 @@ public class Ball extends Application {
         });
         return false;
     }
-
 
 
     public static int exe(int nPlayer) {
