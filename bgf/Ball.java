@@ -57,36 +57,32 @@ class ManageBoard {
      * @param j new place column
      */
     public void movePiece(int x, int y, int i, int j) {
-        HBox piece1Temp = Ball.lists.get(y - 1).get(x - 2);
-        String text = ((Label) (piece1Temp.getChildren().get(0))).getText();
-        piece1Temp.getChildren().remove(0);
-        switch (Ball.cellShape) {
-            case 1:
-                Rectangle rectangle = new Rectangle(58, 58, Color.GREY);
-                piece1Temp.getChildren().add(rectangle);
-                break;
-            case 0:
-                Circle circle = new Circle(30, Color.GREY);
-                piece1Temp.getChildren().add(circle);
-                break;
-        }
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+				System.out.println("reached hereeeeeeeeeeee");
+                HBox piece1Temp = Ball.lists.get(y - 1).get(x - 2);
+                String text = ((Label) (piece1Temp.getChildren().get(0))).getText();
+                piece1Temp.getChildren().remove(0);
+                switch (Ball.cellShape) {
+                    case 1:
+                        Rectangle rectangle = new Rectangle(58, 58, Color.GREY);
+                        piece1Temp.getChildren().add(rectangle);
+                        break;
+                    case 0:
+                        Circle circle = new Circle(30, Color.GREY);
+                        piece1Temp.getChildren().add(circle);
+                        break;
+                }
 
-        replaceLabelText(i, j, text);
-    }
-
-    /**
-     * replace child of a given Hbox specified by its coordinate by a new lable with {@link String} text
-     * @param i
-     * @param j
-     * @param text
-     */
-    private void replaceLabelText(int i, int j, String text) {
-        HBox piece2Temp = Ball.lists.get(j - 1).get(i - 2);
-        piece2Temp.setAlignment(Pos.CENTER);
-        piece2Temp.getChildren().remove(0);
-        Label label = new Label(text);
-        label.setFont(new Font(30));
-        piece2Temp.getChildren().add(label);
+                HBox piece2Temp = Ball.lists.get(j-1).get(i-2);
+                piece2Temp.setAlignment(Pos.CENTER);
+                piece2Temp.getChildren().remove(0);
+                Label label = new Label(text);
+                label.setFont(new Font(30));
+                piece2Temp.getChildren().add(label);
+            }
+        });
     }
 
     /**
@@ -98,7 +94,8 @@ class ManageBoard {
      */
     public void isPieceMoveValid(int x, int y, int i, int j) {
         ManageBoard.queueTriggered = true;
-        moveQueue = String.format("%d%d%d%d", x, y , i, j);
+        moveQueue = String.format("%d%d%d%d", y+2, x+1 , j+2, i+1);
+		//moveQueue = String.format("%d%d%d%d", y, x , j, i);
     }
 }
 
@@ -355,11 +352,11 @@ public class Ball extends Application {
                             String xy = findCoordinate(clickedPiece);
                             String ij = findCoordinate(((HBox) event.getSource()));
                             assert xy != null;
-                            System.out.println("got " + xy + ij);
-                            int x = Integer.parseInt(Character.toString(xy.charAt(0)))+1;
-                            int y = Integer.parseInt(Character.toString(xy.charAt(1)))+2;
+
+                            int x = Integer.parseInt(Character.toString(xy.charAt(0)));
+                            int y = Integer.parseInt(Character.toString(xy.charAt(1)));
                             int i = Integer.parseInt(Character.toString(ij.charAt(0)));
-                            int j = Integer.parseInt(Character.toString(ij.charAt(1)))+3;
+                            int j = Integer.parseInt(Character.toString(ij.charAt(1)));
                             mB.isPieceMoveValid(x, y, i, j);
                             System.out.println("Wait for engine response");
                             while (ManageBoard.queueTriggered) {
@@ -488,7 +485,7 @@ public class Ball extends Application {
         Ball.nCelly= nCelly;
         Ball.nPiece = nPiece;
         launch();
-		Platform.setImplicitExit(false);
+        Platform.setImplicitExit(false);
         return 0;
     }
 }
