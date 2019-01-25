@@ -60,19 +60,25 @@ class ManageBoard {
         String text = ((Label) (piece1Temp.getChildren().get(0))).getText();
         piece1Temp.getChildren().remove(0);
         switch(Ball.cellShape){
-            case 0:
+            case 1:
                 Rectangle rectangle = new Rectangle(58, 58, Color.GREY);
                 piece1Temp.getChildren().add(rectangle);
                 break;
-            case 1:
+            case 0:
                 Circle circle = new Circle(30, Color.GREY);
                 piece1Temp.getChildren().add(circle);
                 break;
         }
 
+        replaceLabelText(i, j, text);
+    }
+
+    private void replaceLabelText(int i, int j, String text) {
         HBox piece2Temp = Ball.lists.get(j-1).get(i-2);
+        piece2Temp.setAlignment(Pos.CENTER);
         piece2Temp.getChildren().remove(0);
         Label label = new Label(text);
+        label.setFont(new Font(30));
         piece2Temp.getChildren().add(label);
     }
 
@@ -122,6 +128,7 @@ public class Ball extends Application {
      * choose whether dice is needed or not by putting diceNeeded 1 or 0 respectively
      */
     public static int diceNeeded = 0;
+    private static int diceNum = 0;
 
     /**
      * unicode representation containing desired number of pieces
@@ -132,7 +139,6 @@ public class Ball extends Application {
     public static String pieceC = "OOOO\nOOOO";
     public static String pieceD = "BBBB\nBBBB";
 
-    private static int diceNum = 0;
 
     public static ArrayList<ArrayList<HBox>> lists;
     public static ArrayList<HBox> pieceB_array;
@@ -182,6 +188,7 @@ public class Ball extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         //Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        ManageBoard mB = new ManageBoard();
         GridPane table = new GridPane();
         GridPane piece_top = new GridPane();
         GridPane piece_bottom = new GridPane();
@@ -196,8 +203,9 @@ public class Ball extends Application {
         root.add(piece_bottom, 1, 2);
 
         Label diceNo = new Label(Integer.toString(diceNum));
+        diceNo.setFont(new Font(30));
         HBox dice = new HBox(diceNo);
-        dice.setVisible(Boolean.parseBoolean(Integer.toString(diceNeeded)));
+        dice.setVisible(diceNeeded == 1);
         dice.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.DASHED, CornerRadii.EMPTY, BorderStroke.THIN)));
         dice.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
