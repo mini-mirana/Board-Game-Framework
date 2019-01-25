@@ -58,9 +58,9 @@ namespace Chess {
 
 		int in;
 		Move ret;
-		cout << "Your move, " << (turn == Color::white ? "white" : "black") << ": ";
+		cout << "Your move, " << (turn == Color::white ? "white" : "black") << ": " << std::endl;
 		std::string s1 = "Your move, ";
-		std::string s2 = turn == Color::white ? "white: \n" : "black: \n";
+		std::string s2 = turn == Color::white ? "white: " : "black: ";
 		Master::Ball.call<void>(Master::showMsg,std::string(s1+s2));
 		//cin >> in;
 		while (Master::ManageBoard.get<std::string>(Master::moveQueue).size() == 0);

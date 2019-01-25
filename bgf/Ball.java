@@ -98,7 +98,7 @@ class ManageBoard {
      */
     public void isPieceMoveValid(int x, int y, int i, int j) {
         ManageBoard.queueTriggered = true;
-        moveQueue = String.format("%d%d%d%d", x + 2, y + 1, i + 2, j + 1);
+        moveQueue = String.format("%d%d%d%d", x, y , i, j);
     }
 }
 
@@ -355,10 +355,11 @@ public class Ball extends Application {
                             String xy = findCoordinate(clickedPiece);
                             String ij = findCoordinate(((HBox) event.getSource()));
                             assert xy != null;
-                            int x = Integer.parseInt(Character.toString(xy.charAt(0)))+2;
-                            int y = Integer.parseInt(Character.toString(xy.charAt(1)))+1;
-                            int i = Integer.parseInt(Character.toString(xy.charAt(0)))+2;
-                            int j = Integer.parseInt(Character.toString(xy.charAt(1)))+1;
+                            System.out.println("got " + xy + ij);
+                            int x = Integer.parseInt(Character.toString(xy.charAt(0)))+1;
+                            int y = Integer.parseInt(Character.toString(xy.charAt(1)))+2;
+                            int i = Integer.parseInt(Character.toString(ij.charAt(0)));
+                            int j = Integer.parseInt(Character.toString(ij.charAt(1)))+3;
                             mB.isPieceMoveValid(x, y, i, j);
                             System.out.println("Wait for engine response");
                             while (ManageBoard.queueTriggered) {
