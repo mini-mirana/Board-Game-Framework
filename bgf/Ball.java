@@ -465,8 +465,15 @@ public class Ball extends Application {
     }
 
 
-    public static int exe(int nPlayer) {
+    public static int exe(int nPlayer,int cellShape, int diceNeeded , int reactionTime , int nCellx,int nCelly,int nPiece,String lockedCell) {
         Ball.nPlayer = nPlayer;
+        Ball.cellShape = cellShape;
+        Ball.diceNeeded = diceNeeded;
+        Ball.reactionTime = reactionTime;
+        Ball.lockedCell =lockedCell;
+        Ball.nCellx = nCellx;
+        Ball.nCelly= nCelly;
+        Ball.nPiece = nPiece;
         launch();
         return 0;
     }
