@@ -123,10 +123,8 @@ int chessEXE() {
 	else
 		while (ai_has_king && human_has_king) {
 			print_board(b, mv);
-			if (turn == ai_color) {
+			if (turn == ai_color)
 				ai_move(b, h, turn, 7, mv);
-				Master::mB.call<void>(Master::movePiece, mv.from / 10, mv.from % 10, mv.to / 10, mv.to % 10);
-			}
 			else
 				mv = read_move(valid_moves(b, turn), turn);
 
@@ -197,6 +195,9 @@ int main() {
 	chessThread.detach();
 	int e = Master::Ball.call<int>(Master::exe, 2, 1, 0, 0, 8, 8, 16, "");
 	//std::thread t1([&]() {Ball.call<int>(exe, 2, 1, 0, 0, 8, 8, 16, ""); });
+	//Master::ManageBoard.getStaticField
+	//jni::field_t
+	//Master::ManageBoard.get<bool>(Master::answerQueue);
 	
 	// The Java VM is automatically destroyed when it goes out of scope.
 	return 0;
