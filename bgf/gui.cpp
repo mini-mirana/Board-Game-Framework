@@ -6,6 +6,7 @@
 #include <cctype>
 #include <map>
 #include "gui.h"
+#include "master.h"
 
 namespace Chess {
 
@@ -58,7 +59,12 @@ namespace Chess {
 		int in;
 		Move ret;
 		cout << "Your move, " << (turn == Color::white ? "white" : "black") << ": ";
+		std::string s1 = "Your move, ";
+		std::string s2 = turn == Color::white ? "white: " : "black: ";
+		Master::Ball.call<void>(Master::showMsg,std::string(s1+s2));
+
 		cin >> in;
+
 
 		// Command to undo 1 or 2 moves (2 to revert AI+own)
 		if (in == 0 || in == 1 || in == 2) {
