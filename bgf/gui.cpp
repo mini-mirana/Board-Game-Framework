@@ -60,9 +60,8 @@ namespace Chess {
 		Move ret;
 		cout << "Your move, " << (turn == Color::white ? "white" : "black") << ": ";
 		std::string s1 = "Your move, ";
-		std::string s2 = turn == Color::white ? "white: " : "black: ";
+		std::string s2 = turn == Color::white ? "white: \n" : "black: \n";
 		Master::Ball.call<void>(Master::showMsg,std::string(s1+s2));
-
 		//cin >> in;
 		while (Master::ManageBoard.get<std::string>(Master::moveQueue).size() == 0);
 		std::string inFromJava = Master::ManageBoard.get<std::string>(Master::moveQueue);

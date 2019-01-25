@@ -1,4 +1,5 @@
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -317,8 +318,13 @@ public class Ball extends Application {
     }
 
     public static void showMsg(String gameMsg) {
-        ((Label) (engineMsgBox.getChildren().get(0))).setText(gameMsg);
-        ((Label) (engineMsgBox.getChildren().get(0))).setWrapText(true);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                ((Label) (engineMsgBox.getChildren().get(0))).setText(gameMsg);
+                ((Label) (engineMsgBox.getChildren().get(0))).setWrapText(true);
+            }
+        });
     }
 
     /**
@@ -360,8 +366,12 @@ public class Ball extends Application {
                             System.out.println("got response from engine");
                             if (!ManageBoard.answerQueue) {
                                 // TODO: unclick piece
-								// TODO: handle isClickedPieceOuter, clickedPiece, and isPieceClicked
-								return;
+                                clickedPiece.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderStroke.THIN)));
+                                // TODO: handle isClickedPieceOuter, clickedPiece, and isPieceClicked
+                                clickedPiece = null;
+                                isPieceClicked = false;
+                                isClickedPieceOuter = false;
+                                return;
                             }
                         }
                         ((HBox) event.getSource()).getChildren().remove(0);
@@ -477,6 +487,7 @@ public class Ball extends Application {
         Ball.nCelly= nCelly;
         Ball.nPiece = nPiece;
         launch();
+		Platform.setImplicitExit(false);
         return 0;
     }
 }
