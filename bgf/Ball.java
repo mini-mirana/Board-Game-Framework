@@ -1,5 +1,6 @@
 import javafx.application.Application;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -216,6 +217,7 @@ public class Ball extends Application {
         engineMsgBox.setAlignment(Pos.CENTER);
         engineMsgBox.setPrefSize(60,60);
         root.add(engineMsgBox, 0, 0);
+        engineMsgBox.setPadding(new Insets(4));
         showMsg(gameMsg);
 
         Button startButton = new Button("Start");
@@ -293,6 +295,7 @@ public class Ball extends Application {
 
     public static void showMsg(String gameMsg) {
         ((Label) (engineMsgBox.getChildren().get(0))).setText(gameMsg);
+        ((Label) (engineMsgBox.getChildren().get(0))).setWrapText(true);
     }
 
     /**
