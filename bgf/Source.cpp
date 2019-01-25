@@ -29,8 +29,8 @@ int main() {
 	system("pause");*/
 
 	jni::Class Ball = jni::Class("Ball");
-	jni::method_t exe = Ball.getStaticMethod("exe", "(I)I");
-	int e = Ball.call<int>(exe,2);
+	jni::method_t exe = Ball.getStaticMethod("exe", "(IIIIIIILjava/lang/String;)I");
+	int e = Ball.call<int>(exe, 2, 1, 0, 0, 8, 8, 16, "");
 	system("pause");
 
 	// The Java VM is automatically destroyed when it goes out of scope.
