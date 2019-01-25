@@ -2,6 +2,7 @@ import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -25,6 +26,11 @@ import java.util.Scanner;
  */
 class ManageBoard {
     /**
+     * is game started or not
+     */
+    public static boolean gameStarted = false;
+
+    /**
      *
      */
     public static String moveQueue;
@@ -41,123 +47,57 @@ class ManageBoard {
 
     }
 
+
     /**
-     * @param cat 1: Player A, 2: Player B, 3: Player C, 4: Player D
-     * @param y   which piece
+     * @param x   old place row
+     * @param y   old place column
      * @param i   new place row
      * @param j   new place column
      */
-    public void moveOutter(int cat, int y, int i, int j) {
-        switch (cat) {
+    public void movePiece(int x, int y, int i, int j) {
+        HBox piece1Temp = Ball.lists.get(y-1).get(x-2);
+        String text = ((Label) (piece1Temp.getChildren().get(0))).getText();
+        piece1Temp.getChildren().remove(0);
+        switch(Ball.cellShape){
+            case 0:
+                Rectangle rectangle = new Rectangle(58, 58, Color.GREY);
+                piece1Temp.getChildren().add(rectangle);
+                break;
             case 1:
-                HBox pieceTemp = Ball.pieceA_array.get(y);
-                String text = ((Label) (pieceTemp.getChildren().get(0))).getText();
-                pieceTemp.setVisible(false);
-
-                HBox listTemp = Ball.lists.get(i).get(j);
-                listTemp.getChildren().remove(0);
-                Label label = new Label(text);
-                listTemp.getChildren().add(label);
-                break;
-            case 2:
-                HBox pieceTemp2 = Ball.pieceA_array.get(y);
-                String text2 = ((Label) (pieceTemp2.getChildren().get(0))).getText();
-                pieceTemp2.setVisible(false);
-
-                HBox listTemp2 = Ball.lists.get(i).get(j);
-                listTemp2.getChildren().remove(0);
-                Label label2 = new Label(text2);
-                listTemp2.getChildren().add(label2);
-                break;
-            case 3:
-                HBox pieceTemp3 = Ball.pieceA_array.get(y);
-                String text3 = ((Label) (pieceTemp3.getChildren().get(0))).getText();
-                pieceTemp3.setVisible(false);
-
-                HBox listTemp3 = Ball.lists.get(i).get(j);
-                listTemp3.getChildren().remove(0);
-                Label label3 = new Label(text3);
-                listTemp3.getChildren().add(label3);
-                break;
-            case 4:
-                HBox pieceTemp4 = Ball.pieceA_array.get(y);
-                String text4 = ((Label) (pieceTemp4.getChildren().get(0))).getText();
-                pieceTemp4.setVisible(false);
-
-                HBox listTemp4 = Ball.lists.get(i).get(j);
-                listTemp4.getChildren().remove(0);
-                Label label4 = new Label(text4);
-                listTemp4.getChildren().add(label4);
+                Circle circle = new Circle(30, Color.GREY);
+                piece1Temp.getChildren().add(circle);
                 break;
         }
+
+        HBox piece2Temp = Ball.lists.get(j-1).get(i-2);
+        piece2Temp.getChildren().remove(0);
+        Label label = new Label(text);
+        piece2Temp.getChildren().add(label);
     }
 
-    public void moveInner(int x, int y, int i, int j) {
-        switch (x) {
-            case 1:
-                HBox pieceTemp = Ball.lists.get(x).get(y);
-                String text = ((Label) (pieceTemp.getChildren().get(0))).getText();
-                pieceTemp.setVisible(false);
-
-                HBox listTemp = Ball.lists.get(i).get(j);
-                listTemp.getChildren().remove(0);
-                Label label = new Label(text);
-                listTemp.getChildren().add(label);
-                break;
-            case 2:
-                HBox pieceTemp2 = Ball.lists.get(x).get(y);
-                String text2 = ((Label) (pieceTemp2.getChildren().get(0))).getText();
-                pieceTemp2.setVisible(false);
-
-                HBox listTemp2 = Ball.lists.get(i).get(j);
-                listTemp2.getChildren().remove(0);
-                Label label2 = new Label(text2);
-                listTemp2.getChildren().add(label2);
-                break;
-            case 3:
-                HBox pieceTemp3 = Ball.lists.get(x).get(y);
-                String text3 = ((Label) (pieceTemp3.getChildren().get(0))).getText();
-                pieceTemp3.setVisible(false);
-
-                HBox listTemp3 = Ball.lists.get(i).get(j);
-                listTemp3.getChildren().remove(0);
-                Label label3 = new Label(text3);
-                listTemp3.getChildren().add(label3);
-                break;
-            case 4:
-                HBox pieceTemp4 = Ball.lists.get(x).get(y);
-                String text4 = ((Label) (pieceTemp4.getChildren().get(0))).getText();
-                pieceTemp4.setVisible(false);
-
-                HBox listTemp4 = Ball.lists.get(i).get(j);
-                listTemp4.getChildren().remove(0);
-                Label label4 = new Label(text4);
-                listTemp4.getChildren().add(label4);
-                break;
-        }
-    }
-
-    public void isMoveValidOutter(int cat, int y, int i, int j) {
+    public void isPieceMoveValid(int x, int y, int i, int j) {
         ManageBoard.queueTriggered = true;
-    }
-
-    public void isMoveValidInner(int x, int y, int i, int j) {
-        ManageBoard.queueTriggered = true;
-        ManageBoard.moveQueue = Integer.toString(x + 2) + Integer.toString(y) + Integer.toString(i + 2) + Integer.toString(j);
     }
 }
 
 public class Ball extends Application {
 
     public static int nCelly = 8;
-    public static int nCellx = 4;
+    public static int nCellx = 8;
     public static int nPlayer = 2;
     public static int nPiece = 1;
+
     /**
      * A string that lets show messages about game stage
      */
     public static String gameMsg = "Message from engine";
     public static HBox engineMsgBox;
+
+    /**
+     * start/end game button
+     */
+    public  static  HBox startButtonBox;
+
     /**
      * if there is no limitation time put reactionTime = 0
      */
@@ -167,15 +107,21 @@ public class Ball extends Application {
      * for Circle put cellShape = 0
      * for Square put cellShape = 1
      */
+
     public static int cellShape = 1;
+
     /**
      * "3,4-5,8" the format of lockedCells
+     * put "" if there is no lockedCell
      */
-    public static String lockedCell = "1,1-2,2";
+    //public static String lockedCell = "1,1-2,2";
+    public static String lockedCell = "";
+
     /**
      * choose whether dice is needed or not by putting diceNeeded 1 or 0 respectively
      */
     public static int diceNeeded = 0;
+
     /**
      * unicode representation containing desired number of pieces
      * Example: "xxx" "ooo"
@@ -192,9 +138,11 @@ public class Ball extends Application {
     public static ArrayList<HBox> pieceA_array;
     public static ArrayList<HBox> pieceC_array;
     public static ArrayList<HBox> pieceD_array;
+    public static ArrayList<HBox> pieces_array;
 
     // arrange pieces
     private boolean isPieceClicked = false;
+    private boolean isClickedPieceOuter = false;
     private HBox clickedPiece = null;
 
     static {
@@ -202,12 +150,14 @@ public class Ball extends Application {
             case 2:
                 pieceA_array = new ArrayList<HBox>(20);
                 pieceB_array = new ArrayList<HBox>(20);
+                pieces_array = new ArrayList<HBox>(40);
                 break;
             case 4:
                 pieceA_array = new ArrayList<HBox>(20);
                 pieceB_array = new ArrayList<HBox>(20);
                 pieceC_array = new ArrayList<HBox>(20);
                 pieceD_array = new ArrayList<HBox>(20);
+                pieces_array = new ArrayList<HBox>(80);
                 break;
         }
         switch (cellShape) {
@@ -245,8 +195,6 @@ public class Ball extends Application {
         root.add(piece_bottom, 1, 2);
 
         Label diceNo = new Label(Integer.toString(diceNum));
-        diceNo.minWidth(60);
-        diceNo.minHeight(60);
         HBox dice = new HBox(diceNo);
         dice.setVisible(Boolean.parseBoolean(Integer.toString(diceNeeded)));
         dice.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.DASHED, CornerRadii.EMPTY, BorderStroke.THIN)));
@@ -260,15 +208,31 @@ public class Ball extends Application {
             }
         });
         dice.setAlignment(Pos.CENTER);
-        dice.setMinSize(60,60);
+        dice.setPrefSize(60,60);
         root.add(dice, 2, 2);
 
         Label engineMsg = new Label();
         engineMsgBox = new HBox(engineMsg);
         engineMsgBox.setAlignment(Pos.CENTER);
-        engineMsgBox.setMinSize(60,60);
+        engineMsgBox.setPrefSize(60,60);
         root.add(engineMsgBox, 0, 0);
         showMsg(gameMsg);
+
+        Button startButton = new Button("Start");
+        startButtonBox = new HBox(startButton);
+        startButtonBox.setAlignment(Pos.CENTER);
+        startButtonBox.setPrefSize(60,60);
+        root.add(startButtonBox,2,0);
+        startButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                for(int i=0;i!=pieces_array.size();i++){
+                    pieces_array.get(i).setVisible(false);
+                }
+                ManageBoard.gameStarted = true;
+            }
+        });
+
 
         for (int i = 0; i < nCelly; i++) {
             for (int j = 0; j < nCellx; j++) {
@@ -276,16 +240,16 @@ public class Ball extends Application {
                     case 0:
                         Circle circle = new Circle(30, Color.GREY);
                         HBox hbox = new HBox(circle);
+                        hbox.setPrefSize(60,60);
                         hbox.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderStroke.THIN)));
                         table.add(hbox, i, j);
                         lists.get(i).add(hbox);
-
                         addClickHandle(hbox);
-
                         break;
                     case 1:
-                        Rectangle rectangle = new Rectangle(60, 60, Color.GREY);
+                        Rectangle rectangle = new Rectangle(58, 58, Color.GREY);
                         HBox hbox2 = new HBox(rectangle);
+                        hbox2.setPrefSize(60,60);
                         hbox2.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderStroke.THIN)));
                         table.add(hbox2, i, j);
                         lists.get(i).add(hbox2);
@@ -295,15 +259,13 @@ public class Ball extends Application {
             }
         }
 
-
         disableCell("-", lockedCell, lists);
-
 
         int y = foundY(pieceA);
         switch (nPlayer) {
             case 2:
                 for (int l = 0; l < y; l++) {
-                    for (int i = 0; i < pieceA.length(); i++) {
+                    for (int i = 0; i < pieceA.length(); i++) { // length of pieceA & pieceB have to be same
                         if (arrangePieces(piece_top, i, l, pieceA, pieceA_array, true)) break;
                         arrangePieces(piece_bottom, i, l, pieceB, pieceB_array, true);
                     }
@@ -311,11 +273,10 @@ public class Ball extends Application {
                 break;
             case 4:
                 for (int l = 0; l < y; l++) {
-                    for (int i = 0; i < pieceA.length(); i++) {
+                    for (int i = 0; i < pieceA.length(); i++) { // length of pieceA & pieceB have to be same
                         if (arrangePieces(piece_top, i, l, pieceA, pieceA_array, true)) break;
                         arrangePieces(piece_bottom, i, l, pieceB, pieceB_array, true);
                         arrangePieces(piece_right, i, l, pieceC, pieceC_array, false);
-
                         arrangePieces(piece_left, i, l, pieceD, pieceD_array, false);
                     }
                 }
@@ -356,39 +317,49 @@ public class Ball extends Application {
             @Override
             public void handle(MouseEvent event) {
                 if (isPieceClicked && event.getButton().equals(MouseButton.PRIMARY) && clickedPiece != event.getSource()) {
-                    clickedPiece.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderStroke.THIN)));
-                    ((HBox) event.getSource()).getChildren().remove(0);
-                    Label text = new Label(((Label) (clickedPiece.getChildren().get(0))).getText());
-                    text.setFont(new Font(30));
-                    ((HBox) event.getSource()).setAlignment(Pos.CENTER);
-                    ((HBox) event.getSource()).setMinSize(60,60);;
-                    ((HBox) event.getSource()).getChildren().add(text);
-                    clickedPiece.getChildren().remove(0);
-                    if (cellShape == 0) {
-                        Circle circle = new Circle(30, Color.GREY);
-                        clickedPiece.getChildren().add(circle);
-                    } else if (cellShape == 1) {
-                        Rectangle rectangle = new Rectangle(60, 60, Color.GREY);
-                        clickedPiece.getChildren().add(rectangle);
+                    if((isClickedPieceOuter && !((HBox)event.getSource()).getChildren().get(0).getClass().getSimpleName().equals(Label.class.getSimpleName()))
+                            || !isClickedPieceOuter) {
+
+                        ((HBox) event.getSource()).getChildren().remove(0);
+                        Label text = new Label(((Label) (clickedPiece.getChildren().get(0))).getText());
+                        text.setFont(new Font(30));
+                        ((HBox) event.getSource()).setAlignment(Pos.CENTER);
+                        ((HBox) event.getSource()).setPrefSize(60, 60);
+                        ((HBox) event.getSource()).getChildren().add(text);
+
+                        clickedPiece.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderStroke.THIN)));
+                        clickedPiece.getChildren().remove(0);
+                        if (!isClickedPieceOuter) {
+                            if (cellShape == 0) {
+                                Circle circle = new Circle(30, Color.GREY);
+                                clickedPiece.getChildren().add(circle);
+                            } else if (cellShape == 1) {
+                                Rectangle rectangle = new Rectangle(58, 58, Color.GREY);
+                                clickedPiece.getChildren().add(rectangle);
+                            }
+                        } else {
+                            clickedPiece.setVisible(false);
+                            pieces_array.remove(clickedPiece);
+                        }
+                        clickedPiece = null;
+                        isPieceClicked = false;
+                        isClickedPieceOuter = false;
                     }
-                    isPieceClicked = false;
-                    clickedPiece = null;
                 } else {
                     if(event.getButton().equals(MouseButton.PRIMARY)) {
                         String simpleName = ((HBox) event.getSource()).getChildren().get(0).getClass().getSimpleName();
-                        if (simpleName.equals(Label.class.getSimpleName()) || simpleName.equals(Label.class.getSimpleName())) {
+                        if (simpleName.equals(Label.class.getSimpleName())) {
                             ((HBox) event.getSource()).setBorder(new Border(new BorderStroke(Color.YELLOW, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderStroke.THIN)));
                             clickedPiece = (HBox) event.getSource();
                             isPieceClicked = true;
                         }
                     }
-                    if (event.getButton().equals(MouseButton.SECONDARY)) {
+                    else if (event.getButton().equals(MouseButton.SECONDARY) && clickedPiece == event.getSource()) {
                         ((HBox) event.getSource()).setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderStroke.THIN)));
                         clickedPiece = null;
                         isPieceClicked = false;
                     }
                 }
-
             }
         });
     }
@@ -402,23 +373,46 @@ public class Ball extends Application {
         return sum + 1;
     }
 
-    private boolean arrangePieces(GridPane piece, int i, int j, String pieceC, ArrayList<HBox> pieceC_array, boolean horizontal) {
+    private boolean arrangePieces(GridPane table, int i, int j, String pieceC, ArrayList<HBox> special_piece_array, boolean horizontal) {
         char c = pieceC.charAt(i);
         if (c == '\n') return true;
+
         Label labelC = new Label(Character.toString(c));
         labelC.setFont(new Font(30));
         labelC.setAlignment(Pos.CENTER);
-        labelC.setMinSize(30, 30);
-        HBox hBoxC = new HBox(labelC);
-        hBoxC.setAlignment(Pos.CENTER);
-        hBoxC.setMinSize(60,60);
-        hBoxC.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderStroke.THIN)));
-        pieceC_array.add(hBoxC);
-        if (!horizontal) piece.add(hBoxC, j, i);
-        else piece.add(hBoxC, i, j);
-        hBoxC.setOnMouseClicked(event -> addClickHandle((HBox) event.getSource()));
+
+        HBox hBox = new HBox();
+        hBox.setAlignment(Pos.CENTER);
+        hBox.setPrefSize(60,60);
+        hBox.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderStroke.THIN)));
+        hBox.getChildren().add(labelC);
+
+        special_piece_array.add(hBox);
+        pieces_array.add(hBox);
+
+        if (!horizontal) table.add(hBox, j, i);
+        else table.add(hBox, i, j);
+
+        hBox.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (!isPieceClicked && event.getButton().equals(MouseButton.PRIMARY)){
+                    ((HBox)event.getSource()).setBorder(new Border(new BorderStroke(Color.GOLD, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderStroke.THIN)));
+                    clickedPiece = (HBox) event.getSource();
+                    isPieceClicked = true;
+                    isClickedPieceOuter = true;
+                }
+                else if(event.getButton().equals(MouseButton.SECONDARY) && clickedPiece == event.getSource()){
+                    ((HBox)event.getSource()).setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderStroke.THIN)));
+                    clickedPiece = null;
+                    isPieceClicked = false;
+                    isClickedPieceOuter = false;
+                }
+            }
+        });
         return false;
     }
+
 
 
 
