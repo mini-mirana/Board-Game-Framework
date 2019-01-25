@@ -117,10 +117,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ai.h" />
+    <ClInclude Include="board.h" />
+    <ClInclude Include="gui.h" />
     <ClInclude Include="jnipp.h" />
+    <ClInclude Include="move.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ai.cpp" />
+    <ClCompile Include="board.cpp" />
+    <ClCompile Include="gui.cpp" />
     <ClCompile Include="jnipp.cpp" />
+    <ClCompile Include="move.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
