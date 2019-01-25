@@ -124,8 +124,10 @@ int chessEXE() {
 	else
 		while (ai_has_king && human_has_king) {
 			print_board(b, mv);
-			if (turn == ai_color)
+			if (turn == ai_color) {
 				ai_move(b, h, turn, 7, mv);
+				Master::mB.call<void>(Master::movePiece, (int)(mv.from / 10), (int)(mv.from % 10), (int)(mv.to / 10),(int)(mv.to % 10));
+			}
 			else
 				mv = read_move(valid_moves(b, turn), turn);
 
