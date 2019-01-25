@@ -63,8 +63,10 @@ namespace Chess {
 		std::string s2 = turn == Color::white ? "white: " : "black: ";
 		Master::Ball.call<void>(Master::showMsg,std::string(s1+s2));
 
-		cin >> in;
-
+		//cin >> in;
+		while (Master::ManageBoard.get<std::string>(Master::moveQueue).size() == 0);
+		std::string inFromJava = Master::ManageBoard.get<std::string>(Master::moveQueue);
+		in = atoi(inFromJava.c_str());
 
 		// Command to undo 1 or 2 moves (2 to revert AI+own)
 		if (in == 0 || in == 1 || in == 2) {
@@ -77,9 +79,18 @@ namespace Chess {
 		ret.from = in % 10 + in / 10 % 10 * 10;
 
 		for (const auto m : valid_moves)
-			if (m.from == ret.from && m.to == ret.to)
+			if (m.from == ret.from && m.to == ret.to) {
+				Master::ManageBoard.set<bool>(Master::queueTriggered, false);
+				Master::ManageBoard.set<std::string>(Master::moveQueue, "");
+				Master::ManageBoard.set<bool>(Master::answerQueue, true);
 				return ret;
+			}
+		
 		cout << "Invalid move\n";
+		Master::Ball.call<void>(Master::showMsg, "Invalid move\n");
+		Master::ManageBoard.set<bool>(Master::queueTriggered, false);
+		Master::ManageBoard.set<std::string>(Master::moveQueue, "");
+		Master::ManageBoard.set<bool>(Master::answerQueue, false);
 		return read_move(valid_moves, turn);
 	}
 

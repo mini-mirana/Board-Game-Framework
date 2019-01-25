@@ -359,7 +359,9 @@ public class Ball extends Application {
                             }
                             System.out.println("got response from engine");
                             if (!ManageBoard.answerQueue) {
-                                return;
+                                // TODO: unclick piece
+								// TODO: handle isClickedPieceOuter, clickedPiece, and isPieceClicked
+								return;
                             }
                         }
                         ((HBox) event.getSource()).getChildren().remove(0);
