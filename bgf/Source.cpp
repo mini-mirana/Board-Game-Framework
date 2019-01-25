@@ -38,6 +38,7 @@ int chessEXE() {
 	Boardhistory h;
 	init_classic_board(b);
 
+	while (Master::ManageBoard.get<bool>(Master::gameStarted) == false);
 	int num_player;
 	while (true) {
 		std::cout << "choose number of player: ";

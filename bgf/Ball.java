@@ -34,15 +34,15 @@ class ManageBoard {
     /**
      *
      */
-    public static volatile String moveQueue;
+    public static volatile String moveQueue = "";
     /**
      * if true c++ has to pay attention
      */
-    public static volatile boolean queueTriggered;
+    public static volatile boolean queueTriggered = true;
     /**
      * c++ answer
      */
-    public static volatile boolean answerQueue;
+    public static volatile boolean answerQueue = true;
 
     ManageBoard() {
 
