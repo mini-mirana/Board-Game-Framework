@@ -8,6 +8,7 @@
 #include "move.h"
 #include "gui.h"
 #include "ai.h"
+#include "master.h"
 
 using namespace Chess;
 
@@ -31,7 +32,6 @@ unsigned long perft(Board &b, Boardhistory &h, int depth, Color turn) {
 
 
 int chessEXE() {
-
 	std::cout << "\nChesscpu 1.0\n\n";
 	std::cout << "Commands:\nyxyx: fromto move.\n0: regret move (last AI move will be reverted as well).\n1: change color (AI will make this move)\n2: exit.\n\n";
 	Board b;
@@ -177,27 +177,24 @@ int chessEXE() {
 	}
 }
 
+
 int main() {
 	// An instance of the Java VM needs to be created.
-	jni::Vm vm("C:\\Program Files (x86)\\Java\\jre-9\\bin\\server\\jvm.dll");
 	//jni::Vm vm("C:\\Program Files\\Java\\jdk-9.0.4\\bin\\server\\jvm.dll");
 	//jni::Vm vm("C:\\Program Files (x86)\\Java\\jre7\\bin\\client\\jvm.dll");
 
 	// Create an instance of java.lang.Integer
-	jni::Class Integer = jni::Class("java/lang/Integer");
-	jni::Object i = Integer.newInstance("1000");
 
 	// Call the `toString` method on that integer
-	std::string str = i.call<std::string>("toString");
+	//std::string str = i.call<std::string>("toString");
+	std::string str = Master::i.call<std::string>("toString");
 	std::cout << str << std::endl;
 	system("pause");
 
-	jni::Class Ball = jni::Class("Ball");
-	jni::method_t exe = Ball.getStaticMethod("exe", "(IIIIIIILjava/lang/String;)I");
 	std::thread chessThread(chessEXE);
-	int e = Ball.call<int>(exe, 2, 1, 0, 0, 8, 8, 16, "");
+	chessThread.detach();
+	int e = Master::Ball.call<int>(Master::exe, 2, 1, 0, 0, 8, 8, 16, "");
 	//std::thread t1([&]() {Ball.call<int>(exe, 2, 1, 0, 0, 8, 8, 16, ""); });
-
 	
 	// The Java VM is automatically destroyed when it goes out of scope.
 	return 0;

@@ -121,6 +121,7 @@
     <ClInclude Include="board.h" />
     <ClInclude Include="gui.h" />
     <ClInclude Include="jnipp.h" />
+    <ClInclude Include="master.h" />
     <ClInclude Include="move.h" />
   </ItemGroup>
   <ItemGroup>
