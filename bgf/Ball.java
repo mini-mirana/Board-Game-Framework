@@ -61,7 +61,6 @@ class ManageBoard {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                System.out.println("reached hereeeeeeeeeeee");
                 HBox piece1Temp = Ball.lists.get(y - 1).get(x - 2);
                 String text = ((Label) (piece1Temp.getChildren().get(0))).getText();
                 piece1Temp.getChildren().remove(0);
@@ -110,7 +109,7 @@ public class Ball extends Application {
     /**
      * A string that lets show messages about game stage
      */
-    public static String gameMsg = "Message from engine";
+    public static String gameMsg = "Let's Play :)";
     public static HBox engineMsgBox;
 
     /**
@@ -205,6 +204,7 @@ public class Ball extends Application {
     public void start(Stage primaryStage) throws Exception {
         //Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         this.mB = new ManageBoard();
+        HBox mainBox = new HBox();
         GridPane table = new GridPane();
         GridPane piece_top = new GridPane();
         GridPane piece_bottom = new GridPane();
@@ -212,11 +212,11 @@ public class Ball extends Application {
         GridPane piece_right = new GridPane();
         GridPane root = new GridPane();
 
-        root.add(piece_top, 1, 0);
-        root.add(piece_left, 0, 1);
+		root.add(piece_top, 0, 0);
+        root.add(piece_left, 0, 2);
         root.add(table, 1, 1);
-        root.add(piece_right, 2, 1);
-        root.add(piece_bottom, 1, 2);
+        root.add(piece_right, 2, 0);
+        root.add(piece_bottom, 2, 2);
 
         Label diceNo = new Label(Integer.toString(diceNum));
         diceNo.setFont(new Font(30));
@@ -234,21 +234,23 @@ public class Ball extends Application {
         });
         dice.setAlignment(Pos.CENTER);
         dice.setPrefSize(60, 60);
-        root.add(dice, 2, 2);
+		root.add(dice,1,0);
 
         Label engineMsg = new Label();
         engineMsgBox = new HBox(engineMsg);
         engineMsgBox.setAlignment(Pos.CENTER);
         engineMsgBox.setPrefSize(60, 60);
-        root.add(engineMsgBox, 0, 0);
+		root.add(engineMsgBox, 0, 1);
         engineMsgBox.setPadding(new Insets(4));
         showMsg(gameMsg);
 
         Button startButton = new Button("Start");
+		startButton.setShape(new Circle(60));
+		startButton.setPrefSize(60,60);
         startButtonBox = new HBox(startButton);
         startButtonBox.setAlignment(Pos.CENTER);
         startButtonBox.setPrefSize(60, 60);
-        root.add(startButtonBox, 2, 0);
+		root.add(startButtonBox, 1, 2);
         startButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -256,6 +258,7 @@ public class Ball extends Application {
                     pieces_array.get(i).setVisible(false);
                 }
                 ManageBoard.gameStarted = true;
+				startButton.setVisible(false);
             }
         });
 
@@ -293,7 +296,7 @@ public class Ball extends Application {
                 for (int l = 0; l < y; l++) {
                     for (int i = 0; i < pieceA.length(); i++) { // length of pieceA & pieceB have to be same
                         if (arrangePieces(piece_top, i, l, pieceA, pieceA_array, true,Color.BLACK)) break;
-                        arrangePieces(piece_bottom, i, l, pieceB, pieceB_array, true,Color.GOLD);
+                        arrangePieces(piece_bottom, i, l, pieceB, pieceB_array, true,Color.WHITE);
                     }
                 }
                 break;
@@ -301,17 +304,18 @@ public class Ball extends Application {
                 for (int l = 0; l < y; l++) {
                     for (int i = 0; i < pieceA.length(); i++) { // length of pieceA & pieceB have to be same
                         if (arrangePieces(piece_top, i, l, pieceA, pieceA_array, true,Color.BLACK)) break;
-                        arrangePieces(piece_bottom, i, l, pieceB, pieceB_array, true,Color.GOLD);
-                        arrangePieces(piece_right, i, l, pieceC, pieceC_array, false,Color.BLUE);
+                        arrangePieces(piece_bottom, i, l, pieceB, pieceB_array, true,Color.WHITE);
+                        arrangePieces(piece_right, i, l, pieceC, pieceC_array, false,Color.GOLD);
                         arrangePieces(piece_left, i, l, pieceD, pieceD_array, false,Color.GREEN);
                     }
                 }
 
                 break;
         }
-
-
-        Scene scene = new Scene(root, 300, 275);
+        
+        mainBox.setAlignment(Pos.CENTER);
+        mainBox.getChildren().add(root);
+        Scene scene = new Scene(mainBox, 300, 275);
         primaryStage.setTitle("Board");
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -321,8 +325,12 @@ public class Ball extends Application {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                ((Label) (engineMsgBox.getChildren().get(0))).setText(gameMsg);
-                ((Label) (engineMsgBox.getChildren().get(0))).setWrapText(true);
+                //((Label) (engineMsgBox.getChildren().get(0))).setText(gameMsg);
+                //((Label) (engineMsgBox.getChildren().get(0))).setWrapText(true);
+                Label label = (Label) (engineMsgBox.getChildren().get(0));
+                label.setStyle("-fx-font-weight: bold");
+                label.setText(gameMsg);
+                label.setWrapText(true);
             }
         });
     }
@@ -380,9 +388,11 @@ public class Ball extends Application {
                         Paint textPaint = ((Label) (clickedPiece.getChildren().get(0))).getTextFill();
                         text.setTextFill(textPaint);
                         text.setFont(new Font(30));
+						
                         ((HBox) event.getSource()).setAlignment(Pos.CENTER);
                         ((HBox) event.getSource()).setPrefSize(60, 60);
                         ((HBox) event.getSource()).getChildren().add(text);
+						((HBox) event.getSource()).setStyle(clickedPiece.getStyle());
 
                         clickedPiece.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderStroke.THIN)));
                         clickedPiece.getChildren().remove(0);
@@ -448,12 +458,14 @@ public class Ball extends Application {
         labelC.setFont(new Font(30));
         labelC.setAlignment(Pos.CENTER);
         labelC.setTextFill(textColor);
+		
 
         HBox hBox = new HBox();
         hBox.setAlignment(Pos.CENTER);
         hBox.setPrefSize(60, 60);
         hBox.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderStroke.THIN)));
         hBox.getChildren().add(labelC);
+		hBox.setStyle("-fx-background-color: GREY;");
 
         special_piece_array.add(hBox);
         pieces_array.add(hBox);
@@ -479,7 +491,6 @@ public class Ball extends Application {
         });
         return false;
     }
-
 
     public static int exe(int nPlayer,int cellShape, int diceNeeded , int reactionTime , int nCellx,int nCelly,int nPiece,String lockedCell,
                           String pieceA, String pieceB, String pieceC, String pieceD) {

@@ -49,6 +49,11 @@ namespace Chess {
 		cout << "\n" << endl;
 	}
 
+
+	void myShowMsg(){
+		Master::Ball.call<void>(Master::showMsg, std::string("Invalid move"));
+	}
+
 	Move read_move(const MoveSet& valid_moves, Color turn) {
 		if (cin.fail()) {
 			cin.clear();
@@ -61,7 +66,7 @@ namespace Chess {
 		cout << "Your move, " << (turn == Color::white ? "white" : "black") << ": " << std::endl;
 		std::string s1 = "Your move, ";
 		std::string s2 = turn == Color::white ? "white: " : "black: ";
-		Master::Ball.call<void>(Master::showMsg,std::string(s1+s2));
+		Master::Ball.call<void>(Master::showMsg,std::string(s1+=s2));
 		//cin >> in;
 		while (Master::ManageBoard.get<std::string>(Master::moveQueue).size() == 0);
 		std::string inFromJava = Master::ManageBoard.get<std::string>(Master::moveQueue);
@@ -85,11 +90,11 @@ namespace Chess {
 				return ret;
 			}
 		
-		cout << "Invalid move\n";
-		Master::Ball.call<void>(Master::showMsg, "Invalid move\n");
+		myShowMsg();
 		Master::ManageBoard.set<bool>(Master::queueTriggered, false);
 		Master::ManageBoard.set<std::string>(Master::moveQueue, "");
 		Master::ManageBoard.set<bool>(Master::answerQueue, false);
+		cout << "Invalid move\n";
 		return read_move(valid_moves, turn);
 	}
 
