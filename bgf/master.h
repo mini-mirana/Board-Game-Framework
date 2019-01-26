@@ -17,5 +17,4 @@ public:
 	static jni::field_t moveQueue;
 	static jni::field_t queueTriggered;
 	static jni::field_t answerQueue;
-
 };

@@ -1,4 +1,4 @@
-
+﻿
 #include <cstdlib>
 #include <iostream>
 #include <ctime>
@@ -196,7 +196,11 @@ int main() {
 
 	std::thread chessThread(chessEXE);
 	chessThread.detach();
-	int e = Master::Ball.call<int>(Master::exe, 2, 1, 0, 0, 8, 8, 16, "");
+	int e = Master::Ball.call<int>(Master::exe, 2, 1, 0, 0, 8, 8, 16, "",
+		"\u2654\u2655\u2656\u2657\u2662\u2663\u2664\u2665\n♟♟♟♟♟♟♟♟",
+		"\u2654\u2655\u2656\u2657\u2662\u2663\u2664\u2665\n♟♟♟♟♟♟♟♟",
+		"",
+		"");
 	//std::thread t1([&]() {Ball.call<int>(exe, 2, 1, 0, 0, 8, 8, 16, ""); });
 	//Master::ManageBoard.getStaticField
 	//jni::field_t

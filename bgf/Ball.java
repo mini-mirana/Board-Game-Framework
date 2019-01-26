@@ -10,6 +10,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -60,7 +61,7 @@ class ManageBoard {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-				System.out.println("reached hereeeeeeeeeeee");
+                System.out.println("reached hereeeeeeeeeeee");
                 HBox piece1Temp = Ball.lists.get(y - 1).get(x - 2);
                 String text = ((Label) (piece1Temp.getChildren().get(0))).getText();
                 piece1Temp.getChildren().remove(0);
@@ -95,7 +96,7 @@ class ManageBoard {
     public void isPieceMoveValid(int x, int y, int i, int j) {
         ManageBoard.queueTriggered = true;
         moveQueue = String.format("%d%d%d%d", y+2, x+1 , j+2, i+1);
-		//moveQueue = String.format("%d%d%d%d", y, x , j, i);
+        //moveQueue = String.format("%d%d%d%d", y, x , j, i);
     }
 }
 
@@ -145,11 +146,13 @@ public class Ball extends Application {
     /**
      * unicode representation containing desired number of pieces
      * Example: "xxx" "ooo"
+     * put "" to show there is no piece
+     * put \n to go to next line
      */
-    public static String pieceA = "\u2654\u2655\u2656\u2657\u2662\u2663\u2664\u2665\n♟♟♟♟♟♟♟♟";
-    public static String pieceB = "\u2654\u2655\u2656\u2657\u2662\u2663\u2664\u2665\n♟♟♟♟♟♟♟♟";
-    public static String pieceC = "OOOO\nOOOO";
-    public static String pieceD = "BBBB\nBBBB";
+    public static String pieceA = "";
+    public static String pieceB = "";
+    public static String pieceC = "";
+    public static String pieceD = "";
 
 
     public static ArrayList<ArrayList<HBox>> lists;
@@ -289,18 +292,18 @@ public class Ball extends Application {
             case 2:
                 for (int l = 0; l < y; l++) {
                     for (int i = 0; i < pieceA.length(); i++) { // length of pieceA & pieceB have to be same
-                        if (arrangePieces(piece_top, i, l, pieceA, pieceA_array, true)) break;
-                        arrangePieces(piece_bottom, i, l, pieceB, pieceB_array, true);
+                        if (arrangePieces(piece_top, i, l, pieceA, pieceA_array, true,Color.BLACK)) break;
+                        arrangePieces(piece_bottom, i, l, pieceB, pieceB_array, true,Color.GOLD);
                     }
                 }
                 break;
             case 4:
                 for (int l = 0; l < y; l++) {
                     for (int i = 0; i < pieceA.length(); i++) { // length of pieceA & pieceB have to be same
-                        if (arrangePieces(piece_top, i, l, pieceA, pieceA_array, true)) break;
-                        arrangePieces(piece_bottom, i, l, pieceB, pieceB_array, true);
-                        arrangePieces(piece_right, i, l, pieceC, pieceC_array, false);
-                        arrangePieces(piece_left, i, l, pieceD, pieceD_array, false);
+                        if (arrangePieces(piece_top, i, l, pieceA, pieceA_array, true,Color.BLACK)) break;
+                        arrangePieces(piece_bottom, i, l, pieceB, pieceB_array, true,Color.GOLD);
+                        arrangePieces(piece_right, i, l, pieceC, pieceC_array, false,Color.BLUE);
+                        arrangePieces(piece_left, i, l, pieceD, pieceD_array, false,Color.GREEN);
                     }
                 }
 
@@ -374,6 +377,8 @@ public class Ball extends Application {
                         }
                         ((HBox) event.getSource()).getChildren().remove(0);
                         Label text = new Label(((Label) (clickedPiece.getChildren().get(0))).getText());
+                        Paint textPaint = ((Label) (clickedPiece.getChildren().get(0))).getTextFill();
+                        text.setTextFill(textPaint);
                         text.setFont(new Font(30));
                         ((HBox) event.getSource()).setAlignment(Pos.CENTER);
                         ((HBox) event.getSource()).setPrefSize(60, 60);
@@ -435,13 +440,14 @@ public class Ball extends Application {
         return sum + 1;
     }
 
-    private boolean arrangePieces(GridPane table, int i, int j, String pieceC, ArrayList<HBox> special_piece_array, boolean horizontal) {
+    private boolean arrangePieces(GridPane table, int i, int j, String pieceC, ArrayList<HBox> special_piece_array, boolean horizontal, Color textColor) {
         char c = pieceC.charAt(i);
         if (c == '\n') return true;
 
         Label labelC = new Label(Character.toString(c));
         labelC.setFont(new Font(30));
         labelC.setAlignment(Pos.CENTER);
+        labelC.setTextFill(textColor);
 
         HBox hBox = new HBox();
         hBox.setAlignment(Pos.CENTER);
@@ -475,7 +481,8 @@ public class Ball extends Application {
     }
 
 
-    public static int exe(int nPlayer,int cellShape, int diceNeeded , int reactionTime , int nCellx,int nCelly,int nPiece,String lockedCell) {
+    public static int exe(int nPlayer,int cellShape, int diceNeeded , int reactionTime , int nCellx,int nCelly,int nPiece,String lockedCell,
+                          String pieceA, String pieceB, String pieceC, String pieceD) {
         Ball.nPlayer = nPlayer;
         Ball.cellShape = cellShape;
         Ball.diceNeeded = diceNeeded;
@@ -484,6 +491,10 @@ public class Ball extends Application {
         Ball.nCellx = nCellx;
         Ball.nCelly= nCelly;
         Ball.nPiece = nPiece;
+        Ball.pieceA = pieceA;
+        Ball.pieceB = pieceB;
+        Ball.pieceC = pieceC;
+        Ball.pieceD = pieceD;
         launch();
         Platform.setImplicitExit(false);
         return 0;
